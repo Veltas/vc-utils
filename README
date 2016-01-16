@@ -12,3 +12,9 @@ Keeping track of a number of C utilities I use across projects
 Library is licensed under GPLv3+, if this is a problem for you... you should
 probably be using a professional or more reliable library. Never contact me
 about changing the license terms.
+
+The library is designed for C11, because that's the standard of C I like using.
+If you are using C90, C99, or similar, then small changes to the prototypes
+used should allow you to use the library with C90/C99 code, and more annoying
+changes will let you compile the library with an older compiler. Once again if
+you're doing this you're using the wrong library.
