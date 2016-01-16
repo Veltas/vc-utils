@@ -10,6 +10,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 int main()
 {
-  ERROR("Testing ERROR()... %d\n", 666);
-  BOUND(-1, 0, 5, "Testing ASSERT()/BOUND()... %d %d\n", 666, 999);
+	ERROR("Testing ERROR()... %d\n", 666);
+	BOUND(-1, 0, 5, "Testing ASSERT()/BOUND()... %d %d\n", 666, 999);
 }
