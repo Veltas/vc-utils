@@ -6,7 +6,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// xarray is an extendable array, it handles managing size/capacity
+// Vector is an extendable array, it handles managing size/capacity
 // separately automatically. It manages allocated arrays as pointers
 // to the arrays themselves, which makes using this in C especially
 // easy.
