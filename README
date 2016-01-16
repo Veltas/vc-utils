@@ -1,0 +1,14 @@
+vc-utils  General C utilities
+Copyright (C) 2016  Christopher Leonard
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+vc-utils
+========
+
+Keeping track of a number of C utilities I use across projects
+
+Library is licensed under GPLv3+, if this is a problem for you... you should
+probably be using a professional or more reliable library. Never contact me
+about changing the license terms.
