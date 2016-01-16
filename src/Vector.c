@@ -12,8 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vc-utils/error.h>
 
 // Data header that goes in the front of the block, followed by array
-struct Data
-{
+struct Data {
 	size_t elementSize, size, capacity;
 };
 
