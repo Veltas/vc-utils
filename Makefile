@@ -26,20 +26,24 @@ bin/test lib $(prefix)/lib $(prefix)/include/vc-utils:
 
 # Binary
 #########
-lib/libvc-utils.so: src/Vector.c src/error.c | lib
+lib/libvc-utils.so: src/List.c src/Vector.c src/error.c | lib
 	$(LD_CMD) -fpic -shared $^ -o$@
 
 # Test targets
 ###############
 .PHONY: test
-test: bin/test/error bin/test/Vector
+test: bin/test/error bin/test/Vector bin/test/List
 	! bin/test/error $(SHH)
 	bin/test/Vector $(SHH)
+	bin/test/List $(SHH)
 
 bin/test/error: test/error.c lib/libvc-utils.so | bin/test
 	$(LD_CMD) $^ -o$@
 
 bin/test/Vector: test/Vector.c lib/libvc-utils.so | bin/test
+	$(LD_CMD) $^ -o$@
+
+bin/test/List: test/List.c lib/libvc-utils.so | bin/test
 	$(LD_CMD) $^ -o$@
 
 # Clean target
