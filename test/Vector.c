@@ -11,7 +11,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <vc-utils/Vector.h>
 #include <vc-utils/error.h>
 
-int main()
+int main(void)
 {
 	const int testNumbers[] = {1, 2, 3, 4, 5, 6, 7};
 	const size_t length = sizeof (testNumbers) / sizeof (int);
