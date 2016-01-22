@@ -45,7 +45,7 @@ List List_alloc(
 void List_free(const List list)
 {
 	// Remove all list elements
-	while (!List_Link_equal(List_front(list), NULL_LINK)) {
+	while (!Link_equal(List_front(list), NULL_LINK)) {
 		List_remove(list, NULL_LINK);
 	}
 
@@ -53,31 +53,31 @@ void List_free(const List list)
 	free(list.p);
 }
 
-List_Link List_front(const List list)
+Link List_front(const List list)
 {
 	Internals *const internals = list.p;
 
 	// Return front pointer
-	return (List_Link){internals->front};
+	return (Link){internals->front};
 }
 
-List_Link List_Link_next(const List_Link link)
+Link Link_next(const Link link)
 {
 	LinkInternals *const linkInternals = link.p;
 
 	// Return next pointer
-	return (List_Link){linkInternals->next};
+	return (Link){linkInternals->next};
 }
 
-bool List_Link_equal(const List_Link l1, const List_Link l2)
+bool Link_equal(const Link l1, const Link l2)
 {
 	// Compare contents of the link pointer wrappers
-	return !memcmp(&l1, &l2, sizeof (List_Link));
+	return !memcmp(&l1, &l2, sizeof (Link));
 }
 
-List_Link List_insert(
+Link List_insert(
 	const List list,
-	const List_Link link,
+	const Link link,
 	void *const data)
 {
 	Internals *const internals = list.p;
@@ -112,10 +112,10 @@ List_Link List_insert(
 		);
 
 	// Return new link
-	return (List_Link){newLink};
+	return (Link){newLink};
 }
 
-void List_remove(const List list, const List_Link link)
+void List_remove(const List list, const Link link)
 {
 	Internals *const internals = list.p;
 
@@ -138,7 +138,7 @@ void List_remove(const List list, const List_Link link)
 	free(nextInt);
 }
 
-void *List_Link_get(const List_Link link)
+void *Link_get(const Link link)
 {
 	LinkInternals *const linkInt = link.p;
 	return (unsigned char *)linkInt + sizeof (LinkInternals);
