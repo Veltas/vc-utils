@@ -15,32 +15,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Links are LinkInternals + dataSize bytes
 // TODO: account for alignment requirements
 
+struct LinkInternals;
+typedef struct LinkInternals LinkInternals;
 struct LinkInternals {
-	struct LinkInternals *next;
+	LinkInternals *next;
 };
 
-struct Internals {
+typedef struct {
 	size_t dataSize;
 	InitFn dataInit;
 	DestFn dataDest;
-	struct LinkInternals *front;
-};
+	LinkInternals *front;
+} Internals;
 
-struct List List_alloc(
+List List_alloc(
 	const size_t dataSize,
 	const InitFn dataInit,
 	const DestFn dataDest)
 {
 	// Allocate and init internals
-	struct Internals *const internals = malloc(sizeof (struct Internals));
+	Internals *const internals = malloc(sizeof (Internals));
 	ASSERT(internals != NULL, "malloc failed");
-	*internals = (struct Internals){dataSize, dataInit, dataDest, NULL};
+	*internals = (Internals){dataSize, dataInit, dataDest, NULL};
 
 	// Return result
-	return (struct List){internals};
+	return (List){internals};
 }
 
-void List_free(const struct List list)
+void List_free(const List list)
 {
 	// Remove all list elements
 	while (!List_Link_equal(List_front(list), NULL_LINK)) {
@@ -51,42 +53,42 @@ void List_free(const struct List list)
 	free(list.p);
 }
 
-struct List_Link List_front(const struct List list)
+List_Link List_front(const List list)
 {
-	struct Internals *const internals = list.p;
+	Internals *const internals = list.p;
 
 	// Return front pointer
-	return (struct List_Link){internals->front};
+	return (List_Link){internals->front};
 }
 
-struct List_Link List_Link_next(const struct List_Link link)
+List_Link List_Link_next(const List_Link link)
 {
-	struct LinkInternals *const linkInternals = link.p;
+	LinkInternals *const linkInternals = link.p;
 
 	// Return next pointer
-	return (struct List_Link){linkInternals->next};
+	return (List_Link){linkInternals->next};
 }
 
-bool List_Link_equal(const struct List_Link l1, const struct List_Link l2)
+bool List_Link_equal(const List_Link l1, const List_Link l2)
 {
 	// Compare contents of the link pointer wrappers
-	return !memcmp(&l1, &l2, sizeof (struct List_Link));
+	return !memcmp(&l1, &l2, sizeof (List_Link));
 }
 
-struct List_Link List_insert(
-	const struct List list,
-	const struct List_Link link,
+List_Link List_insert(
+	const List list,
+	const List_Link link,
 	void *const data)
 {
-	struct Internals *const internals = list.p;
+	Internals *const internals = list.p;
 
 	// Allocate space for new link
 	void *const newLink =
-		malloc(sizeof (struct LinkInternals) + internals->dataSize);
+		malloc(sizeof (LinkInternals) + internals->dataSize);
 	ASSERT(newLink != NULL, "malloc failed");
 
 	// Locate internals for new, old and next link
-	struct LinkInternals
+	LinkInternals
 		*const newLinkInt = newLink,
 		*const oldLinkInt = link.p,
 		*const nextLinkInt = oldLinkInt ? oldLinkInt->next : internals->front;
@@ -99,26 +101,26 @@ struct List_Link List_insert(
 	// Initialize data
 	if (internals->dataInit)
 		internals->dataInit(
-			(unsigned char *)newLinkInt + sizeof (struct LinkInternals),
+			(unsigned char *)newLinkInt + sizeof (LinkInternals),
 			data
 		);
 	else
 		memcpy(
-			(unsigned char *)newLinkInt + sizeof (struct LinkInternals),
+			(unsigned char *)newLinkInt + sizeof (LinkInternals),
 			data,
 			internals->dataSize
 		);
 
 	// Return new link
-	return (struct List_Link){newLink};
+	return (List_Link){newLink};
 }
 
-void List_remove(const struct List list, const struct List_Link link)
+void List_remove(const List list, const List_Link link)
 {
-	struct Internals *const internals = list.p;
+	Internals *const internals = list.p;
 
 	// Locate internals for link and next link
-	struct LinkInternals
+	LinkInternals
 		*const linkInt = link.p,
 		*const nextInt = linkInt ? linkInt->next : internals->front;
 
@@ -129,15 +131,15 @@ void List_remove(const struct List list, const struct List_Link link)
 	// Destroy link's data
 	if (internals->dataDest)
 		internals->dataDest(
-			(unsigned char *)nextInt + sizeof (struct LinkInternals)
+			(unsigned char *)nextInt + sizeof (LinkInternals)
 		);
 
 	// Free link memory
 	free(nextInt);
 }
 
-void *List_Link_get(const struct List_Link link)
+void *List_Link_get(const List_Link link)
 {
-	struct LinkInternals *const linkInt = link.p;
-	return (unsigned char *)linkInt + sizeof (struct LinkInternals);
+	LinkInternals *const linkInt = link.p;
+	return (unsigned char *)linkInt + sizeof (LinkInternals);
 }

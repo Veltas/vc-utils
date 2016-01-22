@@ -5,10 +5,10 @@
 
 int main(void)
 {
-	struct List list = List_alloc(sizeof (int), NULL, NULL);
+	List list = List_alloc(sizeof (int), NULL, NULL);
 
 	// Insert 0 at the front of the list
-	struct List_Link front = List_insert(list, NULL_LINK, &(int){0});
+	List_Link front = List_insert(list, NULL_LINK, &(int){0});
 
 	// Inserts 1 after
 	List_insert(list, front, &(int){1});
