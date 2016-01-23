@@ -23,6 +23,7 @@ struct LinkInternals {
 
 typedef struct {
 	size_t dataSize;
+	void *fnState;
 	InitFn dataInit;
 	DestFn dataDest;
 	LinkInternals *front;
@@ -30,13 +31,14 @@ typedef struct {
 
 List List_alloc(
 	const size_t dataSize,
+	void *fnState,
 	const InitFn dataInit,
 	const DestFn dataDest)
 {
 	// Allocate and init internals
 	Internals *const internals = malloc(sizeof (Internals));
 	ASSERT(internals != NULL, "malloc failed");
-	*internals = (Internals){dataSize, dataInit, dataDest, NULL};
+	*internals = (Internals){dataSize, fnState, dataInit, dataDest, NULL};
 
 	// Return result
 	return (List){internals};
@@ -101,6 +103,7 @@ Link List_insert(
 	// Initialize data
 	if (internals->dataInit)
 		internals->dataInit(
+			internals->fnState,
 			(unsigned char *)newLinkInt + sizeof (LinkInternals),
 			data
 		);
@@ -131,6 +134,7 @@ void List_remove(const List list, const Link link)
 	// Destroy link's data
 	if (internals->dataDest)
 		internals->dataDest(
+			internals->fnState,
 			(unsigned char *)nextInt + sizeof (LinkInternals)
 		);
 

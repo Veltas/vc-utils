@@ -16,6 +16,7 @@ typedef struct { void *p; } List;
 
 typedef struct { void *p; } Link;
 
+#define NULL_LIST ((List){NULL})
 #define NULL_LINK ((Link){NULL})
 
 // List functions
@@ -23,7 +24,13 @@ typedef struct { void *p; } Link;
 
 // Allocates new List, storing data sized dataSize, with corres. init and dest
 // functions (NULL for init does memcpy, NULL for dest does nothing)
-List List_alloc(size_t dataSize, InitFn dataInit, DestFn dataDest);
+// fnState is the state pointer given to the callbacks
+List List_alloc(
+	size_t dataSize,
+	void *fnState,
+	InitFn dataInit,
+	DestFn dataDest
+);
 
 // Frees resources used by List
 void List_free(List list);

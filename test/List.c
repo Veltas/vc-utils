@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 int main(void)
 {
-	List list = List_alloc(sizeof (int), NULL, NULL);
+	List list = List_alloc(sizeof (int), NULL, NULL, NULL);
 
 	// Insert 0 at the front of the list
 	Link front = List_insert(list, NULL_LINK, &(int){0});
